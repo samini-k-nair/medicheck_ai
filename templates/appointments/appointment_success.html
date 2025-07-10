@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block section %}
+<div class="container mt-5">
+  <div class="alert alert-success text-center shadow-sm">
+    <h2 class="mb-3">✅ Appointment Booked Successfully!</h2>
+    <p>Thank you for choosing <strong>MediCheckAI</strong>.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary mt-3">Back to Home</a>
+  </div>
+</div>
+{% endblock %}
