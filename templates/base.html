@@ -59,6 +59,12 @@
               {% endif %}
 
 
+              {% if user.is_authenticated %}
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              {% endif %}
+
+
+
               <!-- <li class="nav-item"><a class="nav-link" href="departments.html">Features</a></li>
               <li class="nav-item"><a class="nav-link" href="doctors.html">Doctors</a></li>
               <li class="nav-item"><a class="nav-link" href="contact.html">Reports</a></li>

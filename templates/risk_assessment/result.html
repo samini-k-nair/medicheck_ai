@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block section %}
+<div class="container my-4">
+  <h2>Your Risk Result</h2>
+  <p><strong>Score:</strong> {{ risk.score }}</p>
+  <p><strong>Category:</strong> {{ risk.category }}</p>
+  <a href="{% url 'risk-assessment' %}" class="btn btn-secondary">Try Again</a>
+</div>
+{% endblock %}

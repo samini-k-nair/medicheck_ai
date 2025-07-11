@@ -1,6 +1,7 @@
+
 from django.urls import path
-from .views import RiskTestView
+from .views import RiskAssessmentView
 
 urlpatterns = [
-    path('', RiskTestView.as_view(), name='risk_test_page'),
+    path('risk-test/', RiskAssessmentView.as_view(), name='risk-assessment'),  # ✅ Named URL
 ]

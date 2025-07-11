@@ -1,93 +1,10 @@
-# from django.shortcuts import render,redirect
-
-# from django.views import View
-
-# from django.contrib.auth import authenticate, login, logout
-
-# from .forms import LoginForm
-
-# # ----------------------------
-# # Login View
-# # ----------------------------
-# class LoginView(View):
-
-#     def get(self, request, *args, **kwargs):
-
-#         form = LoginForm()
-
-#         data = {'page': 'login-page','form':form}
-
-#         return render(request, 'authentication/login.html',context=data)
-
-#     def post(self, request, *args, **kwargs):
-
-#         form = LoginForm(request.POST) 
-
-#         error =  None
-
-#         if form.is_valid():  # form valid or not
-
-#             username = form.cleaned_data.get('username')
-
-#             password = form.cleaned_data.get('password')
-
-#             user = authenticate(username=username,password=password)
-
-#             if user :
-
-#                 login(request,user)
-
-#                 return redirect('symptom_checker')
-            
-#             error = 'invalid credentials'
-            
-#         data = {'form': form, 'error':error}
-
-#         return render(request, 'authentication/login.html',context=data)
-
-
-          
-
-# # # ----------------------------
-# # # Logout View
-# # # ----------------------------
-# # class LogoutView(View):
-
-# #     def get(self, request, *args, **kwargs):
-
-# #         logout(request)
-
-# #         return redirect('home')  # redirect to login page after logout
-
-# # # ----------------------------
-# # # Register Choices View
-# # # ----------------------------
-# # class RegisterChoicesView(View):
-
-# #     def get(self, request, *args, **kwargs):
-
-# #         return render(request,'authentication/register_choices.html')
-
-# #     def post(self, request, *args, **kwargs):
-
-# #         role = request.POST.get('role')
-
-# #         if role == 'patient':
-
-# #             return redirect('patient-register')
-        
-# #         elif role == 'doctor':
-
-# #             return redirect('doctor-details')
-        
-
-
 
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm
 from authentication.models import User
+from patient.models import PatientProfile  
 
 # ----------------------------
 # Login View
@@ -109,11 +26,15 @@ class LoginView(View):
                 return redirect('symptom_checker')
             error = 'Invalid credentials'
         return render(request, 'authentication/login.html', {'form': form, 'error': error})
+    
+    #  logout view
+    
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login')    
 
 
-# ----------------------------
-# Register View
-# ----------------------------
 class RegisterView(View):
     def get(self, request):
         form = RegisterForm()
@@ -125,6 +46,18 @@ class RegisterView(View):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             user.save()
+
+            # ✅ Create PatientProfile if role is Patient
+            if user.role == 'Patient':
+                PatientProfile.objects.create(
+                    user=user,
+                    age=form.cleaned_data.get('age'),
+                    gender=form.cleaned_data.get('gender'),
+                    contact=form.cleaned_data.get('contact'),
+                    address=form.cleaned_data.get('address'),
+                )
+
             login(request, user)
             return redirect('symptom_checker')
+
         return render(request, 'authentication/register.html', {'form': form})

@@ -15,6 +15,8 @@
 
 from django import forms
 from authentication.models import User  # Ensure your custom user model is imported
+from patient.models import PatientProfile  # ✅ import profile model
+
 
 # ✅ Login Form
 class LoginForm(forms.Form):
@@ -42,17 +44,25 @@ class RegisterForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'required': 'required'})
     )
 
+    # ✅ Additional fields for PatientProfile
+    age = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')],
+                               required=False,
+                               widget=forms.Select(attrs={'class': 'form-control'}))
+    contact = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    address = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}))
+
     class Meta:
         model = User
-        fields = ['username', 'email', 'role', 'password']  # role should exist in your User model
+        fields = ['username', 'email', 'role', 'password']
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'required': 'required'}),
-            'role': forms.Select(attrs={'class': 'form-control', 'required': 'required'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'role': forms.Select(attrs={'class': 'form-control'}),
         }
         help_texts = {
-            'username': '',  
-        }    
+            'username': '',
+        }
 
     def clean(self):
         cleaned_data = super().clean()
