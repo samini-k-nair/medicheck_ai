@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load humanize file_extras %}
+
+
+{% block section %}
+  <h2>Delete Report?</h2>
+  <p>Are you sure you want to delete "<strong>{{ object.file.name|basename }}</strong>"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'reports:reports_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

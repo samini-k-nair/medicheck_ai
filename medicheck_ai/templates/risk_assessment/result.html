@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block section %}
+<div class="container my-4">
+  <h2>Your Risk Result</h2>
+  <p><strong>Score:</strong> {{ risk.score }}</p>
+  <p><strong>Category:</strong> {{ risk.category }}</p>
+  <!-- BMI Reference Table -->
+  <div class="table-responsive my-4">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>BMI Range (kg/m²)</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>&lt; 18.5</td><td>Underweight</td></tr>
+        <tr><td>18.5 – 24.9</td><td>Healthy weight</td></tr>
+        <tr><td>25 – 29.9</td><td>Overweight</td></tr>
+        <tr><td>30 – 34.9</td><td>Class I Obesity</td></tr>
+        <tr><td>35 – 39.9</td><td>Class II Obesity</td></tr>
+        <tr><td>≥ 40</td><td>Class III Obesity</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <a href="{% url 'risk-assessment' %}" class="btn btn-secondary">Try Again</a>
+</div>
+{% endblock %}

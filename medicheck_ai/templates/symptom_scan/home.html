@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block section %}
+
+<style>
+  
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 40px;
+    background: linear-gradient(to center, #2ab7a9, #a2ede4);
+  }
+  .hero-text {
+    max-width: 25%;
+    color: white;
+  }
+  .hero-text h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+  .hero-text p {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+  .hero-text a {
+    padding: 10px 20px;
+    background: white;
+    color: #2ab7a9;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+</style>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Your AI Health Assistant</h1>
+    <p>Detect diseases early, book doctor appointments, and assess your health risks – all powered by AI.</p>
+    <!-- <a href="{% url 'symptom_checker' %}">Start Symptom Check</a> -->
+     {% if page == 'symptom_checker-page'%} 
+     <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Start Symptom Check</a></li>
+     {% else %}
+     <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Start Symptom Check</a></li>
+     {% endif %} 
+   
+  </div>
+ 
+</section>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block section %}
+<div class="container my-5">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-body p-5">
+      <h2 class="text-center mb-4 text-primary">Prediction Result</h2>
+
+      <div class="mb-4 text-center">
+        <h5><strong>Your Symptoms:</strong> <span class="text-dark">{{ symptoms }}</span></h5>
+      </div>
+
+      {% if error_message %}
+      <div class="alert alert-warning text-center mt-4">
+        {{ error_message }}
+      </div>
+      {% else %}
+      <div class="table-responsive">
+        <table class="table table-striped table-hover rounded-3 overflow-hidden">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">Predicted Disease</th>
+              <th scope="col">Recommended Doctor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for result in results %}
+            <tr>
+              <td><strong class="text-danger">{{ result.disease }}</strong></td>
+              <td><strong class="text-danger">{{ result.doctor }}</strong></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Action Buttons -->
+      <div class="text-center mt-5">
+        <h5 class="mb-4 text-secondary">What would you like to do next?</h5>
+
+        <a href="{% url  'appointments:appointment_create' %}" class="btn btn-success mx-2 rounded-pill px-4 py-2">
+          Book Appointment
+        </a>
+
+        <a href="{% url 'reports:report_list' %}" class="btn btn-success mx-2 rounded-pill px-4 py-2">
+          View Reports
+        </a>
+        {% if appointment %}
+        <a href="{% url 'reports:reports_upload' appointment_pk=appointment.pk %}" class="btn btn-success">
+          Upload Report
+        </a>
+        {% endif %}
+
+        
+        <a href="{% url 'risk_assessment:risk-assessment' %}" class="btn btn-success mx-2 rounded-pill px-4 py-2">
+
+          Take Risk Test
+        </a>
+      </div>
+      {% endif %}
+
+      <!-- Always visible -->
+      <div class="text-center mt-4">
+        <a href="{% url 'symptom_checker' %}" class="btn btn-danger mx-2 rounded-pill px-4 py-2">
+          Check Another Symptom
+        </a>
+      </div>
+
+    </div> <!-- end card-body -->
+  </div> <!-- end card -->
+</div> <!-- end container -->
+{% endblock %}

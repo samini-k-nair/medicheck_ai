@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block section %}
+<div class="container my-5">
+  <h2 class="text-center mb-4 text-primary">📤 Upload Report</h2>
+
+  <form method="POST" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-success">Upload Report</button>
+      <a href="{% url 'reports:report_list' %}" class="btn btn-outline-primary">View Reports</a>
+
+    </div>
+  </form>
+</div>
+{% endblock %}

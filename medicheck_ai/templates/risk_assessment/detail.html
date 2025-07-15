@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block section %}
+  <div class="container my-5">
+    <h2>Risk Assessment Details</h2>
+    <p><strong>Score:</strong> {{ risk.score }}</p>
+    <p><strong>Category:</strong> {{ risk.category }}</p>
+    <p><strong>Date:</strong> {{ risk.assessed_at|date:"M d, Y H:i" }}</p>
+  </div>
+{% endblock %}
