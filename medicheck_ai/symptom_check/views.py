@@ -3,11 +3,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import SymptomForm
 from .ai_model import predict_disease
 from .models import SymptomCheck
-from appointments.models import Appointment
+# from appointments.models import Appointment
 
 @login_required
 def symptom_checker_view(request):
-    appointment = get_object_or_404(Appointment, user=request.user)  # Ensure appointment exists
+    # appointment = get_object_or_404(Appointment, user=request.user)  # Ensure appointment exists
 
     if request.method == 'POST':
         form = SymptomForm(request.POST)
@@ -19,7 +19,7 @@ def symptom_checker_view(request):
             if not isinstance(predictions, list) or not predictions:
                 return render(request, 'symptom_check/prediction_result.html', {
                     'symptoms': symptoms,
-                    'appointment': appointment,
+                    # 'appointment': appointment,
                     'error_message': "Sorry, we couldn't identify a disease based on the entered symptoms."
                 })
 
@@ -27,7 +27,7 @@ def symptom_checker_view(request):
             if 'disease' not in first:
                 return render(request, 'symptom_check/prediction_result.html', {
                     'symptoms': symptoms,
-                    'appointment': appointment,
+                    # 'appointment': appointment,
                     'error_message': "Sorry, we couldn't identify a disease based on the entered symptoms."
                 })
 
@@ -57,12 +57,12 @@ def symptom_checker_view(request):
             return render(request, 'symptom_check/prediction_result.html', {
                 'symptoms': symptoms,
                 'results': results,
-                'appointment': appointment  # make appointment available to template
+                # 'appointment': appointment  # make appointment available to template
             })
     else:
         form = SymptomForm()
 
     return render(request, 'symptom_check/symptom_form.html', {
         'form': form,
-        'appointment': appointment
+        # 'appointment': appointment
     })

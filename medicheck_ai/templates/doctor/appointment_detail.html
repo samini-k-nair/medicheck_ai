@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block section %}
+<!-- <pre>Reports: {{ reports }}</pre>
+<pre>Risk: {{ risk_assessment }}</pre> -->
+
+
+  <div class="container my-5">
+    <h2>Appointment Details</h2>
+    
+    <p><strong>Patient Name:</strong>
+      {% if appointment.user.get_full_name %}
+        {{ appointment.user.get_full_name }}
+      {% elif appointment.user.first_name %}
+        {{ appointment.user.first_name }} {{ appointment.user.last_name }}
+      {% else %}
+        {{ appointment.user.username }}
+      {% endif %}
+    </p>
+
+    <p><strong>Doctor:</strong>
+      {% if appointment.doctor.get_full_name %}
+        {{ appointment.doctor.get_full_name }}
+      {% elif appointment.doctor.first_name %}
+        {{ appointment.doctor.first_name }} {{ appointment.doctor.last_name }}
+      {% else %}
+        {{ appointment.doctor }}
+      {% endif %}
+    </p>
+
+    <p><strong>Date:</strong> {{ appointment.preferred_date }}</p>
+    <p><strong>Symptoms:</strong> {{ appointment.symptoms }}</p>
+    
+    {% if appointment.prescription %}
+      <p><strong>Prescription:</strong> {{ appointment.prescription }}</p>
+    {% endif %}
+
+    <hr>
+    <h4>Patient Reports</h4>
+    {% if reports %}
+    <ul>
+      {% for r in reports %}
+        <li><a href="{% url 'reports:report_download' r.pk %}">{{ r.title }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p>No reports uploaded by the patient yet.</p>
+    {% endif %}
+
+    <hr>
+    <h3>Risk Assessment</h3>
+    {% if risk_assessment %}
+    <p>{{ risk_assessment.assessed_at|date:"M d, Y H:i" }} – {{ risk_assessment.category }}</p>
+    {% else %}
+    <p>No risk assessment done yet.</p>
+{% endif %}
+
+
+  <hr>
+    <a href="{% url 'doctor:doctor-dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+  </div>
+{% endblock %}

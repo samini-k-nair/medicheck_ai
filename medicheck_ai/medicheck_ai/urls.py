@@ -38,7 +38,10 @@ urlpatterns = [
     
     path('risk/', include('risk_assessment.urls', namespace='risk_assessment')),
 
-    path('doctor/', include(('doctor.urls', 'doctor'), namespace='doctor')),
+     path('doctor/', include('doctor.urls', namespace='doctor')),
+
+    path('prescriptions/', include('prescriptions.urls', namespace='prescriptions')),
+
 ]
 
 

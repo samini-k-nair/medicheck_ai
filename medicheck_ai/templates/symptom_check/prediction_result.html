@@ -45,15 +45,14 @@
         <a href="{% url 'reports:report_list' %}" class="btn btn-success mx-2 rounded-pill px-4 py-2">
           View Reports
         </a>
-        {% if appointment %}
-        <a href="{% url 'reports:reports_upload' appointment_pk=appointment.pk %}" class="btn btn-success">
+       
+        <a href="{% url 'reports:reports_upload' %}" class="btn btn-success mx-2 rounded-pill px-4 py-2">
           Upload Report
         </a>
-        {% endif %}
+       
 
         
         <a href="{% url 'risk_assessment:risk-assessment' %}" class="btn btn-success mx-2 rounded-pill px-4 py-2">
-
           Take Risk Test
         </a>
       </div>

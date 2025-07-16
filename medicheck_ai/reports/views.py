@@ -1,6 +1,6 @@
 import os
 from django.views import View
-from django.views.generic import CreateView, ListView, DeleteView
+from django.views.generic import CreateView, ListView, DeleteView,DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.http import FileResponse, Http404
@@ -13,20 +13,20 @@ from django.db.models import Q
 
 # — Upload Page —
 class ReportUploadView(LoginRequiredMixin, CreateView):
-    model = Report
-    form_class = ReportForm
-    template_name = 'reports/reports_upload.html'
-    success_url = reverse_lazy('reports:report_list')
-    def form_valid(self, form):
-        # If the appointment's PK is passed via URL as 'appointment_pk'
-        appointment = get_object_or_404(
-            Appointment,
-            pk=self.kwargs.get('appointment_pk'),
-            user=self.request.user
-        )
-        form.instance.appointment = appointment
-        return super().form_valid(form)
 
+    model = Report
+
+    form_class = ReportForm
+
+    template_name = 'reports/reports_upload.html'
+
+    success_url = reverse_lazy('reports:report_list')
+
+    def form_valid(self, form):
+
+        form.instance.user = self.request.user
+
+        return super().form_valid(form)
 # — List Page —
 class ReportListView(LoginRequiredMixin, ListView):
     model = Report
@@ -34,25 +34,30 @@ class ReportListView(LoginRequiredMixin, ListView):
     context_object_name = 'reports'
 
     def get_queryset(self):
-        return Report.objects.filter(appointment__user=self.request.user).order_by('-uploaded_at')
+        # Filter reports by the logged-in user
+        return Report.objects.filter(user=self.request.user).order_by('-uploaded_at')
+
 
 # — Download/View Report Endpoint —
-class ReportDownloadView(LoginRequiredMixin, View):
-    def get(self, request, pk):
-        report = get_object_or_404(
-            Report,
-            Q(appointment__user=request.user) |
-            Q(appointment__doctor__user=request.user),
-            pk=pk
+class ReportDownloadView(LoginRequiredMixin, DetailView):
+    model = Report
+
+    def get(self, request, *args, **kwargs):
+        report = self.get_object()
+        user = request.user
+
+        is_patient = (report.user == user)
+        is_doctor = (
+            report.appointment is not None and
+            report.appointment.doctor.user == user
         )
-        if not (report.file.name and report.file.storage.exists(report.file.name)):
-            raise Http404("Sorry, this file doesn't exist.")
-        file_handle = report.file.open('rb')
-        filename = os.path.basename(report.file.name)
+        if not (is_patient or is_doctor):
+            raise Http404("You don't have permission…")
+
         return FileResponse(
-            file_handle,
+            report.file.open('rb'),
             as_attachment=True,
-            filename=filename
+            filename=report.file.name
         )
 
 # — Delete Report Confirmation & Handling —
@@ -62,4 +67,4 @@ class ReportDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('report_list')
 
     def get_queryset(self):
-        return Report.objects.filter(appointment__user=self.request.user)
+      Report.objects.filter(user=self.request.user)

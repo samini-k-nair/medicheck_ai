@@ -12,9 +12,10 @@ app_name = 'reports'
 
 urlpatterns = [
  
-    path('upload/<int:appointment_pk>/', ReportUploadView.as_view(), name='reports_upload'),
-
+    path('upload/', ReportUploadView.as_view(), name='reports_upload'),
     path('', ReportListView.as_view(), name='report_list'),
     path('<int:pk>/download/', ReportDownloadView.as_view(), name='report_download'),
     path('<int:pk>/delete/', ReportDeleteView.as_view(), name='report_delete'),
+
+    # path('risk-test/', RiskAssessmentView.as_view(), name='risk-assessment'),
 ]

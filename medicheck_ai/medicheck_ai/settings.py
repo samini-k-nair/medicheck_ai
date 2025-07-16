@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'reports',
     'django_cleanup.apps.CleanupConfig',
     'risk_assessment',
-    
+    'prescriptions',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +142,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = 'media'
 
 MEDIA_URL = '/media/'
+
+
+# Email configuration for sending prescription emails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # DEBUG = True
 

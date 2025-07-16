@@ -122,7 +122,7 @@ class RegisterView(View):
 
             if user.role == 'Doctor':
                
-                return redirect('doctor-dashboard')
+                return redirect('doctor:doctor-dashboard')
 
             return redirect('symptom_checker')
 

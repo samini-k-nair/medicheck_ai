@@ -54,18 +54,4 @@ class AppointmentDetailView(LoginRequiredMixin, DetailView):
     template_name = 'appointments/appointment_detail.html'
     context_object_name = 'appointment'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        appointment = self.object
-
-        # Reports uploaded by the patient
-        context['reports'] = appointment.reports.all()
-
-        # Latest risk assessment using the correct timestamp field
-        context['risk_assessment'] = (
-            RiskAssessment.objects
-            .filter(user=appointment.user)
-            .order_by('-assessed_at')
-            .first()
-        )
-        return context
+  
